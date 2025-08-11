@@ -26,8 +26,8 @@ def main():
 
     for _ in range(edges):
         num = input().strip().split()
-        u = int(edges[0]) - 1
-        v = int(edges[1]) - 1
+        u = int(num[0]) - 1
+        v = int(num[1]) - 1
 
         graph[u].append(v)
         graph[v].append(u)
