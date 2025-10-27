@@ -13,7 +13,7 @@ def bfs_linked(graph, node, visitedArr):
         node = queue.popleft()
         print(node + 1, end=" ")
 
-        temp = graph[node]
+        temp = (graph[node])
         while temp:
             if not visitedArr[temp.data]:
                 queue.append(temp.data)
