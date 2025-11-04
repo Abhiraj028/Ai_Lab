@@ -1,17 +1,16 @@
 def dfs_stack(graph,start,visitedArr):
     stack = [start]
+    visitedArr[start] = True
     while stack:
         popped = stack.pop()
 
-        if visitedArr[popped]:
-            continue
             
-        visitedArr[popped] = True
         print(popped+1, end=" ")
 
-        for adj in graph[popped]:
+        for adj in reversed(graph[popped]):
             if not visitedArr[adj]:
                 stack.append(adj)
+                visitedArr[adj] = True
 
 
 def main():

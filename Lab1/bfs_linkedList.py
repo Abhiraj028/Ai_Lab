@@ -36,13 +36,23 @@ def main():
         v = int(num[1]) - 1
 
         node = AdjNode(v)
-        node.next = graph[u]
-        graph[u] = node
+        if graph[u] is None:
+            graph[u] = node
+        else:
+            temp = graph[u]
+            while temp.next:
+                temp = temp.next
+            temp.next = node
 
         node = AdjNode(u)
-        node.next = graph[v]
-        graph[v] = node
-
+        if graph[v] is None:
+            graph[v] = node
+        else:
+            temp = graph[v]
+            while temp.next:
+                temp = temp.next
+            temp.next = node
+ 
     visitedArr = [False] * nodes
 
     for node in range(nodes):

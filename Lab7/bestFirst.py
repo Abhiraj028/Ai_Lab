@@ -3,10 +3,10 @@ import heapq
 def best_first_search(graph, heuristic, start, end):
     path = {start: None}
     frontier = [(heuristic[start], start)]
-    visited = set()
 
     while frontier:
         _, current = heapq.heappop(frontier)
+
         if current == end:
             path_list = [current]
             while path[current] is not None:
@@ -15,31 +15,28 @@ def best_first_search(graph, heuristic, start, end):
             path_list.reverse()
             return path_list
 
-        visited.add(current)
+
         for neighbor in graph[current]:
-            if neighbor not in visited and neighbor not in path:
+            if neighbor not in path:
                 heapq.heappush(frontier, (heuristic[neighbor], neighbor))
                 path[neighbor] = current
     return None
 
-if __name__ == "__main__":
-    nodes_length = int(input("Enter the number of nodes:"))
-    edges = int(input("Enter the total number of edges:"))
-    nodes = []
-    print("Enter names for the nodes")
-    for n in range(nodes_length):
-        nodes.append(input())
-    heuristic = {}
-    print("Enter the heuristic costs for the nodes")
-    for n in nodes:
-        heuristic[n] = int(input())
-    graph = {n: {} for n in nodes}
-    print("Add edges and their costs: ")
-    for _ in range(edges):
-        start = input("Start Node: ")
-        end = input("End Node: ")
-        cost = int(input("Edge Cost: "))
-        graph[start][end] = cost
 
-    answer_path = best_first_search(graph, heuristic, nodes[0], nodes[-1])
-    print("Result is: ", answer_path)
+if __name__ == "__main__":
+    n, m = map(int, input("Enter number of nodes and edges: ").split())
+    print("Enter node names:")
+    nodes = input().split()  # e.g. A B C D
+
+    print("Enter heuristic values for each node:")
+    heuristic = {node: int(input(f"h({node}) = ")) for node in nodes}
+
+    graph = {node: {} for node in nodes}
+    print("Enter edges and their costs (u v w):")
+    for _ in range(m):
+        u, v, w = input().split()
+        graph[u][v] = int(w)
+
+    start, end = nodes[0], nodes[-1]
+    result = best_first_search(graph, heuristic, start, end)
+    print("Result path:", result)

@@ -1,49 +1,40 @@
 from queue import PriorityQueue
 
-def uniform_cost_search(start_node, goal_node, graph):
+def uniform_cost_search(graph, start, end):
     pQ = PriorityQueue()
-    pQ.put((0, start_node))
+    pQ.put((0, start))
     explored = set()
 
     while not pQ.empty():
         current_cost, current_node = pQ.get()
 
-        if current_node == goal_node:
+        if current_node == end:
             return current_cost
 
         if current_node in explored:
             continue
 
         explored.add(current_node)
-
-        for neighbor, cost in graph.get(current_node, {}).items():
+        
+        for neighbor in graph[current_node]:
+            cost = graph[current_node][neighbor] 
             if neighbor not in explored:
                 new_cost = current_cost + cost
                 pQ.put((new_cost, neighbor))
-
     return -1
 
-def get_graph_input():
-    graph = {}
-    num_nodes = int(input("Enter number of nodes: "))
-    for _ in range(num_nodes):
-        node = input("Enter node name: ")
-        graph[node] = {}
-        num_neighbors = int(input(f"Enter number of neighbors for {node}: "))
-        for _ in range(num_neighbors):
-            neighbor = input("  Enter neighbor name: ")
-            cost = int(input(f"  Enter cost to {neighbor}: "))
-            graph[node][neighbor] = cost
-    return graph
 
 if __name__ == "__main__":
-    print("Uniform Cost Search - Interactive Mode")
-    graph = get_graph_input()
-    start_node = input("Enter start node: ")
-    goal_node = input("Enter goal node: ")
+    n, m = map(int, input("Enter number of nodes and edges: ").split())
+    print("Enter node names:")
+    nodes = input().split()  # e.g. A B C D
 
-    cost = uniform_cost_search(start_node, goal_node, graph)
-    if cost != -1:
-        print(f"Least cost from {start_node} to {goal_node} is: {cost}")
-    else:
-        print("No path found to the goal node.")
+    graph = {node: {} for node in nodes}
+    print("Enter edges and their costs (u v w):")
+    for _ in range(m):
+        u, v, w = input().split()
+        graph[u][v] = int(w)
+
+    start, end = nodes[0], nodes[-1]
+    cost = uniform_cost_search(graph, start, end)
+    print(f"Least cost from {start} to {end} is: {cost}")
